@@ -130,7 +130,7 @@ def task(dtid):
     return render_template('Task.html',ctask = ctask,title = u'任务详情',comment = comment,tasks = True)
 
 
-@app.route('shanyi/task/delete',methods = ['POST']):
+@app.route('shanyi/task/delete',methods = ['POST'])
 def task_delete():
     try:
         deletedata = request.form
