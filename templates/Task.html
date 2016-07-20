@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block nav%}
+
+<div class="navbar-inner">
+  <div class="left">
+    <a onclick="dt_back()" style="padding-left:5px;">返回</a>
+  </div>
+  <div class="center" style="left: 0px;">{{title}}</div>
+  <!-- <div class="right"></div> -->
+</div>
+{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-header">{{ctask.title}}</div>
+  <div class="card-content">
+    <div class="card-content-inner" style="font-size:15px;">
+      <p>
+        目标人数:{{ctask.target}}    实际人数:{{ctask.actual}}
+      </p>
+      <pre style="white-space: pre-wrap;word-wrap: break-word;">
+      {{ctask.content}}
+    </pre>
+    <small>{{ctask.date}}</small>
+    </div>
+  </div>
+  <hr>
+  <div class="list-block media-list">
+    <ul>
+      {% for i in comment%}
+      <li>
+        <div class="item-content">
+          <div class="item-media"><img src="http://139.196.187.155/images/users/{{i.avatar}}.png" width="44"></div>
+          <div class="item-inner">
+            <div class="item-title-row">
+              <div class="item-title">{{i.name}}</div>
+            </div>
+            <p style="margin-top:2px;margin-bottom:1px;">
+              {{i.content}}
+            </p>
+          </div>
+        </div>
+      </li>
+      {% endfor%}
+    </ul>
+  </div>
+</div>
+{% endblock %}

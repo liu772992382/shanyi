@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+{% for i in daily_task%}
+<div class="card">
+  <div class="card-header">{{i.title}}</div>
+  <div class="card-content">
+    <div class="card-content-inner">
+      {{i.desc}}
+    </div>
+  </div>
+  <div class="card-footer">
+    <a href="/shanyi/task/{{i.dtid}}">More</a>
+    {{i.date}}
+  </div>
+</div>
+{% endfor %}
+{% endblock %}

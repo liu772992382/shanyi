@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block nav%}
+
+<div class="navbar-inner">
+  <div class="left">
+    <a onclick="news_back()" style="padding-left:5px;">返回</a>
+  </div>
+  <div class="center" style="left: 0px;">{{title}}</div>
+  <!-- <div class="right"></div> -->
+</div>
+{% endblock %}
+{% block content %}
+<div class="content-block-title">Just inputs</div>
+<form class="list-block">
+  <ul>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <input type="text" placeholder="标题" name="title" id="title" >
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <textarea name="desc" rows="20" cols="40" placeholder="任务介绍" id="desc" ></textarea>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <input type="text" name="image" placeholder="任务配图" id="image" >
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <input type="text" name="target" placeholder="目标人数" id="target" >
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <select id="label">
+              <option value="1">无</option>
+              <option value="2">明德致远</option>
+              <option value="3">保护环境</option>
+              <option value="4">救人危急</option>
+              <option value="5">劝人为善</option>
+              <option value="6">成人之美</option>
+              <option value="7">上善若水</option>
+              <option value="8">不踏草坪</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <textarea name="content" rows="20" cols="40" placeholder="内容" id="content" ></textarea>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <p class="login">
+    <div class="button button-big button-fill" onclick="task1()" >发布</div>
+  </p>
+</form>
+{% endblock %}
