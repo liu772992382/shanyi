@@ -74,7 +74,7 @@ def heartwords_delete():
 		else:
 			db.session.delete(delete_item)
 			db.session.commit()
-			return redirect('/heartwords')
+			return 'success'
 
 
 @app.route('/shanyi/heartwords/star',methods = ['POST'])
@@ -102,6 +102,9 @@ def daily_tasks():
     elif request.method == 'POST':
         try:
             task_form = request.form
+            for i in task_form:
+                if task_form[i] == '':
+                    return 'error'
             taskdata = DailyTask()
             taskdata.title = task_form['title']
             taskdata.desc = task_form['desc']
@@ -184,7 +187,9 @@ def prize():
     elif request.method == 'POST':
         try:
             prize_form = request.form
-            print prize_form
+            for i in prize_form:
+                if prize_form[i] == '':
+                    return 'error'
             # '' in prize_form.values
             prizedata = Prize()
             prizedata.title = prize_form['title']

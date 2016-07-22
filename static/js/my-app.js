@@ -78,7 +78,7 @@ function users_action(uid) {
             text: '删除该用户',
             color:  'orange',
             onClick: function () {
-              myApp.confirm('确定冻结/解冻该用户?','善意',
+              myApp.confirm('确定删除该用户?','善意',
               function () {
                 $.post('/shanyi/users',{
                   'action':'delete',
