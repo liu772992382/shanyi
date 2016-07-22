@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #coding=utf-8
+#FKXXbLlfJpId
 from os import urandom
 class Config(object):
 	SQLALCHEMY_DATABASE_URI='mysql://root:19951028liu@localhost:3306/shanyi?charset=utf8'

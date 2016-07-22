@@ -3,7 +3,7 @@
 {% for i in info %}
 <div class="card facebook-card">
   <div class="card-header">
-    <div class="facebook-avatar"><img src="http://139.196.187.155/images/users/{{user_avatar[loop.index0]}}.png" width="34" height="34" onerror="this.src='../static/img/icon/heart.png'"></div>
+    <div class="facebook-avatar"><img class="lazy-loaded lazy-fadeIn" src="http://139.196.187.155/images/users/{{user_avatar[loop.index0]}}.png" width="34" height="34" onerror="this.src='../static/img/icon/heart.png'"></div>
     <div class="facebook-name">{{user_name[loop.index0]}}</div>
     <div class="facebook-date">{{i.datetime}}</div>
   </div>
@@ -13,7 +13,7 @@
       <p class="color-gray">Likes: {{i.likes}} &nbsp;&nbsp; Comments: {{i.comments}}</p>
     </div>
   </div>
-  <div class="card-footer"><a onclick="hw_star({{i.hwid}})"  class="link {% if i.star %} active {% endif %}">Star</a><a onclick="hw_delete({{i.hwid}})" class="link">Delete</a></div>
+  <div class="card-footer"><a onclick="hw_star({{i.hwid}})"  class="link {% if i.star %} active {% endif %}">加精</a><a onclick="hw_delete({{i.hwid}})" class="link">删除</a></div>
 </div>
 {% endfor %}
 {% endblock %}

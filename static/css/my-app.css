@@ -3,6 +3,11 @@ i.n-icon{
   font-size: 23px;
 }
 
+.lazy-loaded.lazy-fadeIn {
+    -webkit-animation: lazyFadeIn 600ms;
+    animation: lazyFadeIn 600ms;
+}
+
 .card-footer a.active{
   color: red !important;
 }

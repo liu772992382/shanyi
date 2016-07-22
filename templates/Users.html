@@ -7,7 +7,7 @@
     {% for i in users %}
     <li>
       <a href="#" class="item-link item-content" onclick="users_action({{i.uid}})">
-        <div class="item-media"><img src="http://139.196.187.155/images/users/{{i.avatar}}.png" width="80" onerror="this.src='../static/img/icon/heart.png'"></div>
+        <div class="item-media"><img class="lazy-loaded lazy-fadeIn" src="http://139.196.187.155/images/users/{{i.avatar}}.png" width="80" onerror="this.src='../static/img/icon/heart.png'"></div>
         <div class="item-inner">
           <div class="item-title-row">
             <div class="item-title">{{i.username}}{% if i.freeze %}(已冻结){% endif %}</div>
