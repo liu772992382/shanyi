@@ -109,6 +109,67 @@ function users_action(uid) {
     myApp.actions(buttons);
 }
 
+function users_action1(uid) {
+    var buttons = [
+        {
+            text: '冻结/解冻该用户',
+            onClick: function () {
+              myApp.confirm('确定冻结/解冻该用户?','善意',
+              function () {
+                  $.post('/shanyi/users',{
+                    'action':'freeze',
+                    'uid':uid
+                  },function(data,status){
+                    if(data == 'success'){
+                      myApp.alert('冻结/解冻成功',function(){
+                      location.reload();
+                      });
+                    }
+                    else if(data == 'error'){
+                      myApp.alert('失败');
+                    }
+                  })
+              },
+              function () {
+                ;
+              }
+            );
+            }
+        },
+        {
+            text: '删除该用户',
+            color:  'orange',
+            onClick: function () {
+              myApp.confirm('确定删除该用户?','善意',
+              function () {
+                $.post('/shanyi/users',{
+                  'action':'delete',
+                  'uid':uid
+                },function(data,status){
+                  if(data == 'success'){
+                    myApp.alert('删除成功',function(){
+                    location.reload();
+                    });
+                  }
+                  else if(data == 'error'){
+                    myApp.alert('失败');
+                  }
+                })
+              },
+              function () {
+                ;
+              }
+            );
+            }
+        },
+        {
+            text: 'Cancel',
+            color: 'red'
+        },
+    ];
+    myApp.actions(buttons);
+}
+
 function dt_back(){
   window.location.href = "/shanyi/dailytasks";
 }
@@ -143,6 +204,21 @@ function hw_star(star_id){
       });}
     else if(data =='error'){
       myApp.alert('加精失败!');
+    }
+  })
+}
+
+function hw_destar(star_id){
+  $.post('/shanyi/heartwords/star',
+  {
+    'star_id' : star_id
+  },function(data,status){
+    if(data == 'success'){
+      myApp.alert('取消加精成功！',function(){
+      location.reload();
+      });}
+    else if(data =='error'){
+      myApp.alert('取消加精失败!');
     }
   })
 }
