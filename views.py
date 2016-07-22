@@ -10,6 +10,8 @@ from model import *
 import time
 from functools import wraps
 
+#登陆验证及获取时间函数
+#-------------------------------------------------------------------------------
 def login_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -21,7 +23,8 @@ def login_required(func):
 def get_time():
 	return time.strftime("%Y-%m-%d %X", time.localtime())
 
-
+#登陆及登出操作
+#-------------------------------------------------------------------------------
 @app.route('/shanyi/login',methods = ['GET','POST'])
 def login():
 	if request.method == 'GET':
@@ -47,18 +50,22 @@ def logout():
 	else:
 		return 'error'
 
-
+#心语查看 删除 加精
+#-------------------------------------------------------------------------------
 @app.route('/shanyi/heartwords',methods = ['GET'])
 @login_required
 def get_HeartWords():
-	info = db.session.query(HeartWord).order_by(HeartWord.likes.desc()).all()
-	user_name = []
-	user_avatar = []
+	info = db.session.query(HeartWord).filter_by(star=0).order_by(HeartWord.likes.desc()).all()
 	for i in info:
 		user0 = db.session.query(User).filter_by(uid = i.uid).first()
-		user_name.append(user0.username)
-		user_avatar.append(user0.avatar)
-	return render_template('HeartWords.html',info  = info,user_name = user_name,user_avatar = user_avatar,heartwords = True,title = u'心语')
+		i.username = user0.username
+		i.avatar = user0.avatar
+	info_star = db.session.query(HeartWord).filter_by(star=1).order_by(HeartWord.likes.desc()).all()
+	for i in info_star:
+		user1 = db.session.query(User).filter_by(uid = i.uid).first()
+		i.username = user1.username
+		i.avatar = user1.avatar
+	return render_template('HeartWords.html',info  = info,info_star = info_star,heartwords = True,title = u'心语')
 
 
 @app.route('/shanyi/heartwords/delete',methods = ['POST'])
@@ -91,8 +98,37 @@ def heartwords_star():
 			db.session.commit()
 			return 'success'
 
+#用户查看 冻结 删除
+#-------------------------------------------------------------------------------
+@app.route('/shanyi/users',methods = ['GET','POST'])
+@login_required
+def users():
+	if request.method == 'GET':
+		users = db.session.query(User).filter_by(freeze=0).order_by(User.level.desc()).all()
+		users_freeze = db.session.query(User).filter_by(freeze=1).order_by(User.level.desc()).all()
+		return render_template('Users.html',users = users,title = u'用户',users_freeze = users_freeze)
+	elif request.method == 'POST':
+		user_form = request.form
+		if user_form['action'] == 'freeze':
+			freeze_user = db.session.query(User).filter_by(uid = user_form['uid']).first()
+			if freeze_user.freeze == 1:
+				freeze_user.freeze = 0
+			else:
+				freeze_user.freeze = 1
+			db.session.commit()
+			return 'success'
+		elif user_form['action'] == 'delete':
+			delete_user = db.session.query(User).filter_by(uid = user_form['uid']).first()
+			db.session.delete(delete_user)
+			db.session.commit()
+			return 'success'
+		else:
+			return 'error'
+	else:
+		return 'error'
 
-
+#日常任务查看 详细信息 删除
+#-------------------------------------------------------------------------------
 @app.route('/shanyi/dailytasks',methods = ['GET','POST'])
 @login_required
 def daily_tasks():
@@ -144,7 +180,14 @@ def task_delete():
     except:
         return 'error'
 
+#管理页面
+#-------------------------------------------------------------------------------
+@app.route('/shanyi/manage',methods = ['GET'])
+def manage():
+    return render_template('Manage.html',title = u'管理中心',manage = True)
 
+#发布新闻
+#-------------------------------------------------------------------------------
 @app.route('/shanyi/news',methods = ['GET','POST'])
 @login_required
 def news():
@@ -173,12 +216,8 @@ def news():
     else:
         return 'error'
 
-
-@app.route('/shanyi/manage',methods = ['GET'])
-def manage():
-    return render_template('Manage.html',title = u'管理中心',manage = True)
-
-
+#发布奖品
+#-------------------------------------------------------------------------------
 @app.route('/shanyi/prize',methods = ['GET','POST'])
 @login_required
 def prize():
@@ -208,34 +247,8 @@ def prize():
     else:
         return 'error'
 
-
-@app.route('/shanyi/users',methods = ['GET','POST'])
-@login_required
-def users():
-	if request.method == 'GET':
-		users = db.session.query(User).order_by(User.level.desc()).all()
-		return render_template('Users.html',users = users,title = u'用户')
-	elif request.method == 'POST':
-		user_form = request.form
-		if user_form['action'] == 'freeze':
-			freeze_user = db.session.query(User).filter_by(uid = user_form['uid']).first()
-			if freeze_user.freeze == 1:
-				freeze_user.freeze = 0
-			else:
-				freeze_user.freeze = 1
-			db.session.commit()
-			return 'success'
-		elif user_form['action'] == 'delete':
-			delete_user = db.session.query(User).filter_by(uid = user_form['uid']).first()
-			db.session.delete(delete_user)
-			db.session.commit()
-			return 'success'
-		else:
-			return 'error'
-	else:
-		return 'error'
-
-
+#发送系统消息
+#-------------------------------------------------------------------------------
 @app.route('/shanyi/systemmessage',methods = ['GET','POST'])
 @login_required
 def systemmessage():
@@ -255,6 +268,18 @@ def systemmessage():
             return 'error'
     else:
         return 'error'
+
+#举报列表
+#-------------------------------------------------------------------------------
+@app.route('/shanyi/reports',methods = ['GET'])
+def reports():
+    reports = db.session.query(Report).all()
+    reasons = [u'广告',u'色情',u'反动',u'无关']
+    for i in reports:
+        i.user = db.session.query(User).filter_by(uid = i.uid).first()
+        i.heartword = db.session.query(HeartWord).filter_by(hwid = i.hwid).first()
+        i.reason_cn = reasons[i.reason]
+    return render_template('Reports.html',reports = reports,title = u'举报列表',manage = True)
 
 
 @app.route('/shanyi/managetask',methods = ['GET'])

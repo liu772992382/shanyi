@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block nav%}
+<div class="navbar-inner">
+  <div class="left">
+    <a onclick="news_back()" style="padding-left:5px;">返回</a>
+  </div>
+  <div class="center" style="left: 0px;">{{title}}</div>
+  <!-- <div class="right"></div> -->
+</div>
+{% endblock %}
+{% block content %}
+{% for i in reports %}
+<div class="card facebook-card">
+  <div class="card-header">
+    <div class="facebook-avatar"><img class="lazy-loaded lazy-fadeIn" src="http://139.196.187.155/images/users/{{i.user.avatar}}.png" width="34" height="34" onerror="this.src='../static/img/icon/heart.png'"></div>
+    <div class="facebook-name">{{i.user.username}}</div>
+    <div class="facebook-date">{{i.datetime}}</div>
+  </div>
+  <div class="card-content">
+    <div class="card-content-inner">
+      <p>
+        举报原因：{{i.reason_cn}}
+      </p>
+      <p>{{i.heartword.content|safe}}</p>
+      <p class="color-gray"> &nbsp;&nbsp; </p>
+    </div>
+  </div>
+  <div class="card-footer"><a >Likes: {{i.heartword.likes}}</a><a class="link">Comments: {{i.heartword.comments}}</a></div>
+</div>
+{% endfor %}
+{% endblock %}
