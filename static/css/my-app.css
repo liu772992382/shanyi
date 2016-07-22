@@ -8,6 +8,10 @@ i.n-icon{
     animation: lazyFadeIn 600ms;
 }
 
+.content-block{
+  margin-top: 5px;
+}
+
 .buttons-row{
   padding-top: 5px;
   padding-left: 5px;
@@ -15,7 +19,7 @@ i.n-icon{
 }
 
 .card-footer a.active{
-  color: red !important;
+  color: orange !important;
 }
 
 .list-block{
