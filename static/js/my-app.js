@@ -60,8 +60,9 @@ function users_action(uid) {
                     'uid':uid
                   },function(data,status){
                     if(data == 'success'){
-                      myApp.alert('冻结/解冻成功');
+                      myApp.alert('冻结/解冻成功',function(){
                       location.reload();
+                      });
                     }
                     else if(data == 'error'){
                       myApp.alert('失败');
@@ -85,8 +86,9 @@ function users_action(uid) {
                   'uid':uid
                 },function(data,status){
                   if(data == 'success'){
-                    myApp.alert('删除成功');
+                    myApp.alert('删除成功',function(){
                     location.reload();
+                    });
                   }
                   else if(data == 'error'){
                     myApp.alert('失败');
@@ -121,8 +123,9 @@ function hw_delete(delete_id){
     'delete_id' : delete_id
   },function(data,status){
     if(data == 'success'){
-      myApp.alert('删除成功！');
-      location.reload();}
+      myApp.alert('删除成功！',function(){
+        location.reload();
+      });}
     else if(data =='error'){
       myApp.alert('删除失败!');
     }
@@ -135,8 +138,9 @@ function hw_star(star_id){
     'star_id' : star_id
   },function(data,status){
     if(data == 'success'){
-      myApp.alert('加精成功！');
-      location.reload();}
+      myApp.alert('加精成功！',function(){
+      location.reload();
+      });}
     else if(data =='error'){
       myApp.alert('加精失败!');
     }
@@ -152,8 +156,9 @@ function user_login(){
       myApp.alert('登陆成功！');
       window.location.href = "/shanyi/heartwords";}
     else if(data =='error'){
-      myApp.alert('账号或密码错误!');
-      location.reload();
+      myApp.alert('账号或密码错误!',function(){
+        location.reload();
+      });
     }
   })
 }
