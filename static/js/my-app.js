@@ -124,7 +124,7 @@ function hw_delete(delete_id){
       myApp.alert('删除成功！');
       location.reload();}
     else if(data =='error'){
-      myApp.aler('删除失败!');
+      myApp.alert('删除失败!');
     }
   })
 }
@@ -138,7 +138,7 @@ function hw_star(star_id){
       myApp.alert('加精成功！');
       location.reload();}
     else if(data =='error'){
-      myApp.aler('加精失败!');
+      myApp.alert('加精失败!');
     }
   })
 }
