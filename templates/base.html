@@ -33,24 +33,19 @@
   <div class="panel-overlay"></div>
   <div class="views">
     <div class="view view-main">
-      <div class="pages">
-        <div class="page navbar-fixed" data-page="home">
-          <div class="navbar">
-            <div class="navbar-inner">
-              <!-- <div class="left"></div> -->
-              {% block nav %}
-              {% endblock %}
-              <div class="center" style="left: 0px;">{{title}}</div>
-              <!-- <div class="right"></div> -->
-            </div>
-          </div>
+
+        {% block nav %}
+        {% endblock %}
+      <div class="pages navbar-through toolbar-through">
+        <div class="page" data-page="home">
+
           <div class="toolbar tabbar tabbar-labels">
             <div class="toolbar-inner">
                 <a href="/shanyi/heartwords" class="tab-link {% if heartwords %}active{% else %}  {% endif %}">
                     <i class="fa fa-heart-o n-icon"></i>
                     <span class="tabbar-label">心语</span>
                 </a>
-                <a href="/shanyi/users" class="tab-link {% if users %}active{% else %}  {% endif %}">
+                <a href="/shanyi/users" class="tab-link {% if user %}active{% else %}  {% endif %}">
                     <i class="fa fa-users n-icon">
                     </i>
                     <span class="tabbar-label">用户</span>

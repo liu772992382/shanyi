@@ -1,23 +1,27 @@
 {% extends "base.html" %}
 {% block nav%}
-
-<div class="navbar-inner">
-  <div class="left">
-    <a onclick="news_back()" style="padding-left:5px;">返回</a>
+<div class="navbar">
+  <div class="navbar-inner">
+    <!-- Now, Left and Center parts reflect page title and page links, let's slide them -->
+    <div class="left sliding">
+      <a href="#" class="link back">
+        <i class="icon icon-back"></i>
+        <span>返回</span>
+      </a>
+    </div>
+    <div class="center sliding">用户奖品列表</div>
   </div>
-  <div class="center" style="left: 0px;">{{title}}</div>
-  <!-- <div class="right"></div> -->
 </div>
 {% endblock %}
 {% block content %}
 <div class="content-block-title">Just inputs</div>
-<form class="list-block">
+<form class="list-block" method="post" enctype="multipart/form-data" action="/shanyi/dailytasks">
   <ul>
     <li>
       <div class="item-content">
         <div class="item-inner">
           <div class="item-input">
-            <input type="text" placeholder="标题" name="title" id="title" >
+            <input type="text" placeholder="标题" name="title" id="title" required="">
           </div>
         </div>
       </div>
@@ -26,7 +30,7 @@
       <div class="item-content">
         <div class="item-inner">
           <div class="item-input">
-            <textarea name="desc" rows="20" cols="40" placeholder="任务介绍" id="desc" ></textarea>
+            <textarea name="desc" rows="20" cols="40" placeholder="任务介绍" id="desc" required=""></textarea>
           </div>
         </div>
       </div>
@@ -35,7 +39,8 @@
       <div class="item-content">
         <div class="item-inner">
           <div class="item-input">
-            <input type="text" name="image" placeholder="任务配图" id="image" >
+            <span>任务配图</span>
+            <input type="file" name="image" placeholder="任务配图" id="image" required="">
           </div>
         </div>
       </div>
@@ -44,7 +49,7 @@
       <div class="item-content">
         <div class="item-inner">
           <div class="item-input">
-            <input type="text" name="target" placeholder="目标人数(必须为数字)" id="target" >
+            <input type="text" name="target" placeholder="目标人数(必须为数字)" id="target" required="">
           </div>
         </div>
       </div>
@@ -53,7 +58,7 @@
       <div class="item-content">
         <div class="item-inner">
           <div class="item-input">
-            <select id="label">
+            <select id="label" name="label">
               <option value="1">无</option>
               <option value="2">明德致远</option>
               <option value="3">保护环境</option>
@@ -71,14 +76,12 @@
       <div class="item-content">
         <div class="item-inner">
           <div class="item-input">
-            <textarea name="content" rows="20" cols="40" placeholder="内容" id="content" ></textarea>
+            <textarea name="content" rows="20" cols="40" placeholder="内容" id="content" required=""></textarea>
           </div>
         </div>
       </div>
     </li>
   </ul>
-  <p class="login">
-    <div class="button button-big button-fill" onclick="task1()" >发布</div>
-  </p>
+  <input type="submit" name="Submit" value="添加" class="button button-big button-fill"/>
 </form>
 {% endblock %}

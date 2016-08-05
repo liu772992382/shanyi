@@ -2,6 +2,7 @@
 #coding=utf8
 
 import os
+import hashlib
 import json
 import requests
 from flask import Flask, request, render_template, redirect,make_response, flash, session , g ,url_for, jsonify
@@ -9,6 +10,20 @@ from datetime import datetime
 from model import *
 import time
 from functools import wraps
+
+UPLOAD_FOLDER = 'static/img/upload/'
+
+
+
+def hashimage(upfile):
+    fname = upfile.filename
+    a = fname[:fname.rfind('.')]
+    ha=hashlib.md5()
+    ha.update(a)
+    c = str(ha.hexdigest()) + fname[fname.rfind('.'):]
+    upfile.save(os.path.join(UPLOAD_FOLDER, c))
+    print c
+    return 'http://139.196.187.155:8888/static/img/upload/' + c
 
 #登陆验证及获取时间函数
 #-------------------------------------------------------------------------------
@@ -106,7 +121,7 @@ def users():
 	if request.method == 'GET':
 		users = db.session.query(User).filter_by(freeze=0).order_by(User.level.desc()).all()
 		users_freeze = db.session.query(User).filter_by(freeze=1).order_by(User.level.desc()).all()
-		return render_template('Users.html',users = users,title = u'用户',users_freeze = users_freeze)
+		return render_template('Users.html',users = users,title = u'用户',users_freeze = users_freeze,user = True)
 	elif request.method == 'POST':
 		user_form = request.form
 		if user_form['action'] == 'freeze':
@@ -138,24 +153,21 @@ def daily_tasks():
     elif request.method == 'POST':
         try:
             task_form = request.form
-            for i in task_form:
-                if task_form[i] == '':
-                    return 'error'
             taskdata = DailyTask()
             taskdata.title = task_form['title']
             taskdata.desc = task_form['desc']
             taskdata.content = task_form['content']
-            taskdata.image = task_form['image']
+            taskdata.image = hashimage(request.files.get('image'))
             taskdata.label = int(task_form['label'])
             taskdata.target = int(task_form['target'])
             taskdata.date = get_time()
             db.session.add(taskdata)
             db.session.commit()
-            return 'success'
+            return render_template('Verify.html',verify = 'success')
         except:
-            return 'error'
+            return render_template('Verify.html',verify = 'error')
     else:
-        return 'error'
+        return render_template('Verify.html',verify = 'error')
 
 
 @app.route('/shanyi/task/<int:dtid>',methods = ['GET'])
@@ -200,21 +212,21 @@ def news():
                 if news_form[i] == '':
                     return 'error'
             newsdata = News()
-            newsdata.title = news_form['title']
+            newsdata.image = hashimage(request.files.get('file'))
             newsdata.subtitle = news_form['subtitle']
-            newsdata.image = news_form['image']
+            newsdata.title = news_form['title']
             newsdata.source = news_form['source']
             newsdata.content = news_form['content']
             newsdata.type = news_form['type']
-            newsdata.city = int(news_form['city'])
+            newsdata.city = 0
             newsdata.datetime = get_time()
             db.session.add(newsdata)
             db.session.commit()
-            return 'success'
+            return render_template('Verify.html',verify = 'success')
         except:
-            return 'error'
+            return render_template('Verify.html',verify = 'error')
     else:
-        return 'error'
+        return render_template('Verify.html',verify = 'error')
 
 #发布奖品
 #-------------------------------------------------------------------------------
@@ -226,26 +238,23 @@ def prize():
     elif request.method == 'POST':
         try:
             prize_form = request.form
-            for i in prize_form:
-                if prize_form[i] == '':
-                    return 'error'
             # '' in prize_form.values
             prizedata = Prize()
             prizedata.title = prize_form['title']
             prizedata.content = prize_form['content']
             prizedata.provider = prize_form['provider']
-            prizedata.cover = prize_form['cover']
-            prizedata.round_img = prize_form['round_img']
-            prizedata.image = prize_form['image']
+            prizedata.cover = hashimage(request.files.get('cover'))
+            prizedata.round_img = hashimage(request.files.get('round_img'))
+            prizedata.image = hashimage(request.files.get('image'))
             prizedata.cost = int(prize_form['cost'])
             prizedata.datetime = get_time()
             db.session.add(prizedata)
             db.session.commit()
-            return 'success'
+            return render_template('Verify.html',verify = 'success')
         except:
-            return 'error'
+            return render_template('Verify.html',verify = 'error')
     else:
-        return 'error'
+        return render_template('Verify.html',verify = 'error')
 
 #发送系统消息
 #-------------------------------------------------------------------------------
@@ -253,21 +262,23 @@ def prize():
 @login_required
 def systemmessage():
     if request.method == 'GET':
-        return render_template('SystemMessage.html')
+        users = db.session.query(User).all()
+        return render_template('SystemMessage.html',users = users,manage = True)
     elif request.method == 'POST':
         try:
-            system_form = requests.form
+            system_form = request.form
             systemdata = SystemMessage()
             systemdata.content = system_form['content']
             systemdata.type = system_form['type']
+            systemdata.uid = system_form['uid']
             systemdata.datetime = get_time()
             db.session.add(systemdata)
             db.session.commit()
-            return 'success'
+            return render_template('Verify.html',verify = 'success')
         except:
-            return 'error'
+            return render_template('Verify.html',verify = 'error')
     else:
-        return 'error'
+        return render_template('Verify.html',verify = 'error')
 
 #举报列表
 #-------------------------------------------------------------------------------
@@ -281,11 +292,44 @@ def reports():
         i.reason_cn = reasons[i.reason]
     return render_template('Reports.html',reports = reports,title = u'举报列表',manage = True)
 
+#用户奖品信息
+#-------------------------------------------------------------------------------
+@app.route('/shanyi/userprize',methods = ['GET'])
+def user_prize():
+    userp = db.session.query(UserPrizeClaim).all()
+    for i in userp:
+        i.user = db.session.query(User).filter_by(uid = i.uid).first()
+        i.prize = db.session.query(Prize).filter_by(pzid = i.pzid).first()
+    return render_template('UserPrize.html',userp = userp,manage = True)
+
+#启动页图片设置
+#-------------------------------------------------------------------------------
+@app.route('/shanyi/splash',methods = ['GET','POST'])
+def splash():
+    if request.method == 'GET':
+        return render_template('Splash.html')
+    elif request.method == 'POST':
+        try:
+            splash_form = request.form
+            splashdata = Splash()
+            splashdata.url = splash_form['url']
+            splashdata.img = hashimage(request.files.get('img'))
+            db.session.add(splashdata)
+            db.session.commit()
+            return render_template('Verify.html',verify = 'success')
+        except:
+            return render_template('Verify.html',verify = 'error')
+    else:
+        return render_template('Verify.html',verify = 'error')
 
 @app.route('/shanyi/managetask',methods = ['GET'])
-def managetask():
+def select():
     return render_template('ManageTasks.html',title = u'发布日常任务',manage = True)
 
+
+@app.route('/shanyi/select',methods = ['GET'])
+def managetask():
+    return render_template('Select.html',title = u'选择',manage = True)
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0',port=8888, debug=True)

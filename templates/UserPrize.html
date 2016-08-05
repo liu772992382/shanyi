@@ -9,28 +9,36 @@
         <span>返回</span>
       </a>
     </div>
-    <div class="center sliding">举报列表</div>
+    <div class="center sliding">用户奖品列表</div>
   </div>
 </div>
 {% endblock %}
 {% block content %}
-{% for i in reports %}
+
+<div class="content-block-title">Facebook Cards</div>
+{% for i in userp %}
 <div class="card facebook-card">
-  <div class="card-header">
-    <div class="facebook-avatar"><img class="lazy-loaded lazy-fadeIn" src="http://139.196.187.155/images/users/{{i.user.avatar}}.png" width="34" height="34" onerror="this.src='../static/img/icon/heart.png'"></div>
+  <div class="card-header no-border">
+    <div class="facebook-avatar"><img src="http://139.196.187.155/images/users/{{i.user.avatar}}.png" width="34" height="34"></div>
     <div class="facebook-name">{{i.user.username}}</div>
     <div class="facebook-date">{{i.datetime}}</div>
   </div>
   <div class="card-content">
     <div class="card-content-inner">
-      <p>
-        举报原因：{{i.reason_cn}}
-      </p>
-      <p>{{i.heartword.content|safe}}</p>
-      <p class="color-gray"> &nbsp;&nbsp; </p>
+      真实姓名:{{i.real_name}}<br/>
+      奖品:{{i.prize.title}}<br/>
+      地址:{{i.address}}<br/>
+      手机:{{i.cellphone}}
     </div>
   </div>
-  <div class="card-footer"><a >Likes: {{i.heartword.likes}}</a><a class="link">Comments: {{i.heartword.comments}}</a></div>
+  <!-- <div class="card-footer no-border">
+    <a href="#" class="link">Like</a>
+    <a href="#" class="link">Comment</a>
+    <a href="#" class="link">Share</a>
+  </div> -->
 </div>
 {% endfor %}
+
+
+
 {% endblock %}

@@ -239,6 +239,20 @@ function user_login(){
   })
 }
 
+$$('form.ajax-submit').on('submitted', function (e) {
+  var xhr = e.detail.xhr; // actual XHR object
+  var data = e.detail.data; // Ajax repsonse from action file
+  // do something with response data
+  if(data == 'success'){
+    myApp.alert('发布成功！',function(){
+      window.location.href = "/shanyi/manage";
+    });
+    }
+  else if(data =='error'){
+    myApp.alert('发布失败!');
+  }
+});
+
 function news1(){
   $.post('/shanyi/news',{
     'title':$('#title').val(),
