@@ -17,17 +17,17 @@
 {% for i in reports %}
 <div class="card facebook-card">
   <div class="card-header">
-    <div class="facebook-avatar"><img class="lazy-loaded lazy-fadeIn" src="http://139.196.187.155/images/users/{{i.user.avatar}}.png" width="34" height="34" onerror="this.src='../static/img/icon/heart.png'"></div>
-    <div class="facebook-name">{{i.user.username}}</div>
+    <div class="facebook-avatar"><img class="lazy-loaded lazy-fadeIn" src="http://139.196.187.155/images/users/{{i.report_user.avatar}}.png" width="34" height="34" onerror="this.src='../static/img/icon/heart.png'"></div>
+    <div class="facebook-name">{{i.report_user.username}}</div>
     <div class="facebook-date">{{i.datetime}}</div>
   </div>
   <div class="card-content">
     <div class="card-content-inner">
       <p>
-        举报原因：{{i.reason_cn}}
+        举报者:{{i.user.username}}&nbsp;
+          举报原因：{{i.reason_cn}}
       </p>
-      <p>{{i.heartword.content|safe}}</p>
-      <p class="color-gray"> &nbsp;&nbsp; </p>
+      {{i.heartword.content|safe}}
     </div>
   </div>
   <div class="card-footer"><a >Likes: {{i.heartword.likes}}</a><a class="link">Comments: {{i.heartword.comments}}</a></div>

@@ -289,6 +289,7 @@ def reports():
     for i in reports:
         i.user = db.session.query(User).filter_by(uid = i.uid).first()
         i.heartword = db.session.query(HeartWord).filter_by(hwid = i.hwid).first()
+        i.report_user = db.session.query(User).filter_by(uid = i.heartword.uid).first()
         i.reason_cn = reasons[i.reason]
     return render_template('Reports.html',reports = reports,title = u'举报列表',manage = True)
 
