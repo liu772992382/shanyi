@@ -103,17 +103,19 @@ def get_mercy():
 @app.route('/shanyi/heartwords/delete',methods = ['POST'])
 @login_required
 def heartwords_delete():
-	delete_id = request.form.get('delete_id')
-	if delete_id == None:
-		return 'error'
-	else:
-		delete_item = db.session.query(HeartWord).filter_by(hwid = delete_id).first()
-		if delete_item == None:
-			return 'error'
-		else:
-			db.session.delete(delete_item)
-			db.session.commit()
-			return 'success'
+    delete_id = request.form.get('delete_id')
+    if delete_id == None:
+        return 'error'
+    else:
+        delete_item = db.session.query(HeartWord).filter_by(hwid = delete_id).first()
+    if delete_item == None:
+        return 'error'
+    else:
+        user = db.session.query(User).filter_by(uid = delete_item.uid).first()
+        user.points -= 10
+        db.session.delete(delete_item)
+        db.session.commit()
+        return 'success'
 
 
 @app.route('/shanyi/heartwords/star',methods = ['POST'])
