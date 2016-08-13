@@ -30,6 +30,9 @@
       <div class="card-content">
         <div class="card-content-inner">
           <p>{{i.content|safe}}</p>
+          {% for j in i.images %}
+          <img src="http://139.196.187.155/images/heart_words/{{j.md5}}_thumbnail.png" alt="" />
+          {% endfor %}
           <p class="color-gray">Likes: {{i.likes}} &nbsp;&nbsp; Comments: {{i.comments}}</p>
         </div>
       </div>
@@ -49,6 +52,9 @@
       <div class="card-content">
         <div class="card-content-inner">
           <p>{{i.content|safe}}</p>
+          {% for j in i.images %}
+          <img src="http://139.196.187.155/images/heart_words/{{j.md5}}_thumbnail.png" alt="" />
+          {% endfor %}
           <p class="color-gray">Likes: {{i.likes}} &nbsp;&nbsp; Comments: {{i.comments}}</p>
         </div>
       </div>
