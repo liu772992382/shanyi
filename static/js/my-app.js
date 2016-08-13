@@ -18,6 +18,11 @@ myApp.onPageInit('about', function (page) {
     });
 });
 
+var mySearchbar = app.searchbar('.searchbar', {
+    searchList: '.list-block-search',
+    searchIn: '.item-title'
+});   
+
 // Generate dynamic page
 var dynamicPageIndex = 0;
 function createContentPage() {

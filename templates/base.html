@@ -38,12 +38,17 @@
         {% endblock %}
       <div class="pages navbar-through toolbar-through">
         <div class="page" data-page="home">
-
+          {% block search %}
+          {% endblock %}
           <div class="toolbar tabbar tabbar-labels">
             <div class="toolbar-inner">
                 <a href="/shanyi/heartwords" class="tab-link {% if heartwords %}active{% else %}  {% endif %}">
                     <i class="fa fa-heart-o n-icon"></i>
                     <span class="tabbar-label">心语</span>
+                </a>
+                <a href="/shanyi/mercy" class="tab-link {% if mercy %}active{% else %}  {% endif %}">
+                    <i class="fa fa-wheelchair n-icon"></i>
+                    <span class="tabbar-label">行善</span>
                 </a>
                 <a href="/shanyi/users" class="tab-link {% if user %}active{% else %}  {% endif %}">
                     <i class="fa fa-users n-icon">

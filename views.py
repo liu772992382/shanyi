@@ -70,17 +70,34 @@ def logout():
 @app.route('/shanyi/heartwords',methods = ['GET'])
 @login_required
 def get_HeartWords():
-	info = db.session.query(HeartWord).filter_by(star=0).order_by(HeartWord.likes.desc()).all()
+	info = db.session.query(HeartWord).filter_by(star=0).filter_by(type = 0).order_by(HeartWord.datetime.desc()).all()
 	for i in info:
 		user0 = db.session.query(User).filter_by(uid = i.uid).first()
 		i.username = user0.username
 		i.avatar = user0.avatar
-	info_star = db.session.query(HeartWord).filter_by(star=1).order_by(HeartWord.likes.desc()).all()
+	info_star = db.session.query(HeartWord).filter_by(star=1).filter_by(type = 0).order_by(HeartWord.datetime.desc()).all()
 	for i in info_star:
 		user1 = db.session.query(User).filter_by(uid = i.uid).first()
 		i.username = user1.username
 		i.avatar = user1.avatar
 	return render_template('HeartWords.html',info  = info,info_star = info_star,heartwords = True,title = u'心语')
+
+
+@app.route('/shanyi/mercy',methods = ['GET'])
+@login_required
+def get_mercy():
+	info = db.session.query(HeartWord).filter_by(star=0).filter_by(type = 1).order_by(HeartWord.datetime.desc()).all()
+	for i in info:
+		user0 = db.session.query(User).filter_by(uid = i.uid).first()
+		i.username = user0.username
+		i.avatar = user0.avatar
+	info_star = db.session.query(HeartWord).filter_by(star=1).filter_by(type = 1).order_by(HeartWord.datetime.desc()).all()
+	for i in info_star:
+		user1 = db.session.query(User).filter_by(uid = i.uid).first()
+		i.username = user1.username
+		i.avatar = user1.avatar
+	return render_template('Mercy.html',info  = info,info_star = info_star,mercy = True,title = u'行善')
+
 
 
 @app.route('/shanyi/heartwords/delete',methods = ['POST'])

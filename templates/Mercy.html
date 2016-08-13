@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block nav%}
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="center sliding">行善</div>
+  </div>
+</div>
+  <!-- <div class="right"></div> -->
+{% endblock %}
+{% block content %}
+
+
+<div class="buttons-row">
+  <!-- 关联到第一个tab, 默认激活 -->
+  <a href="#tab1" class="tab-link active button">未加精行善</a>
+  <!-- 关联到第二个tab -->
+  <a href="#tab2" class="tab-link button">已加精行善</a>
+</div>
+
+<div class="tabs">
+  <!-- Tab 1, 默认激活 -->
+  <div id="tab1" class="tab active">
+    {% for i in info %}
+    <div class="card facebook-card">
+      <div class="card-header">
+        <div class="facebook-avatar"><img class="lazy-loaded lazy-fadeIn" src="http://139.196.187.155/images/users/{{i.avatar}}.png" width="34" height="34" onerror="this.src='../static/img/icon/heart.png'"></div>
+        <div class="facebook-name">{{i.username}}</div>
+        <div class="facebook-date">{{i.datetime}}</div>
+      </div>
+      <div class="card-content">
+        <div class="card-content-inner">
+          <p>{{i.content|safe}}</p>
+          <p class="color-gray">Likes: {{i.likes}} &nbsp;&nbsp; Comments: {{i.comments}}</p>
+        </div>
+      </div>
+      <div class="card-footer"><a onclick="hw_star({{i.hwid}})"  class="link {% if i.star %} active {% endif %}">加精</a><a onclick="hw_delete({{i.hwid}})" class="link">删除</a></div>
+    </div>
+    {% endfor %}
+  </div>
+  <!-- Tab 2 -->
+  <div id="tab2" class="tab">
+    {% for i in info_star %}
+    <div class="card facebook-card">
+      <div class="card-header">
+        <div class="facebook-avatar"><img class="lazy-loaded lazy-fadeIn" src="http://139.196.187.155/images/users/{{i.avatar}}.png" width="34" height="34" onerror="this.src='../static/img/icon/heart.png'"></div>
+        <div class="facebook-name">{{i.username}}</div>
+        <div class="facebook-date">{{i.datetime}}</div>
+      </div>
+      <div class="card-content">
+        <div class="card-content-inner">
+          <p>{{i.content|safe}}</p>
+          <p class="color-gray">Likes: {{i.likes}} &nbsp;&nbsp; Comments: {{i.comments}}</p>
+        </div>
+      </div>
+      <div class="card-footer"><a onclick="hw_destar({{i.hwid}})"  class="link {% if i.star %} active {% endif %}">取消加精</a><a onclick="hw_delete({{i.hwid}})" class="link">删除</a></div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+
+{% endblock %}
