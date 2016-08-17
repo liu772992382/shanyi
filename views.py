@@ -17,7 +17,8 @@ UPLOAD_FOLDER = 'static/img/upload/'
 
 def hashimage(upfile):
     fname = upfile.filename
-    a = fname[:fname.rfind('.')]
+    a = fname[:fname.rfind('.')].encode('utf8')
+    print repr(a)
     ha=hashlib.md5()
     ha.update(a)
     c = str(ha.hexdigest()) + fname[fname.rfind('.'):]
@@ -46,9 +47,7 @@ def login():
 		return render_template('Login.html')
 	elif request.method == 'POST':
 		login_user = request.form.get('username')
-		print 1
 		login_password = request.form.get('password')
-		print 2
 		if login_user == ADMIN_USERNAME and login_password == ADMIN_PASSWORD:
 			session['username'] = ADMIN_USERNAME
 			return 'success'
