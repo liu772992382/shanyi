@@ -48,7 +48,7 @@
               <div class="item-media"><img class="lazy-loaded lazy-fadeIn" src="http://139.196.187.155/images/users/{{i.avatar}}.png" width="80" onerror="this.src='../static/img/icon/heart.png'"></div>
               <div class="item-inner">
                 <div class="item-title-row">
-                  <div class="item-title">{{i.username}}</div>
+                  <div class="item-title">{{i.nickname}}</div>
                   <div class="item-after">Lv.{{i.level}}</div>
                 </div>
                 <div class="item-subtitle">points:{{i.points}}</div>
@@ -64,7 +64,14 @@
   <!-- Tab 2 -->
   <div id="tab2" class="tab">
     <div class="content-block">
-      <div class="list-block media-list">
+      <!-- This block will be displayed if nothing found -->
+      <div class="content-block searchbar-not-found">
+        <div class="content-block-inner">Nothing found</div>
+      </div>
+
+      <!-- This block will be displayed if anything found, and this list block is used a searbar target -->
+
+      <div class="list-block media-list list-block-search searchbar-found">
         <ul>
           {% for i in users_freeze %}
           <li>
@@ -72,7 +79,7 @@
               <div class="item-media"><img class="lazy-loaded lazy-fadeIn" src="http://139.196.187.155/images/users/{{i.avatar}}.png" width="80" onerror="this.src='../static/img/icon/heart.png'"></div>
               <div class="item-inner">
                 <div class="item-title-row">
-                  <div class="item-title">{{i.username}}(已冻结)</div>
+                  <div class="item-title">{{i.nickname}}(已冻结)</div>
                   <div class="item-after">Lv.{{i.level}}</div>
                 </div>
                 <div class="item-subtitle">积分:{{i.points}}</div>
