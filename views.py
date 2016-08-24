@@ -169,21 +169,28 @@ def daily_tasks():
         daily_task = db.session.query(DailyTask).all()
         return render_template('DailyTasks.html',tasks = True,daily_task = daily_task,title = u'日常任务')
     elif request.method == 'POST':
-        try:
-            task_form = request.form
-            taskdata = DailyTask()
-            taskdata.title = task_form['title']
-            taskdata.desc = task_form['desc']
-            taskdata.content = task_form['content']
-            taskdata.image = hashimage(request.files.get('image'))
-            taskdata.label = int(task_form['label'])
-            taskdata.target = int(task_form['target'])
-            taskdata.date = get_time()
-            db.session.add(taskdata)
+        # try:
+        task_form = request.form
+        taskdata = DailyTask()
+        taskdata.title = task_form['title']
+        taskdata.desc = task_form['desc']
+        taskdata.content = task_form['content']
+        taskdata.image = hashimage(request.files.get('image'))
+        taskdata.target = int(task_form['target'])
+        taskdata.date = get_time()
+        if task_form['new_label']:
+            nlabel = Label()
+            nlabel.name = task_form['new_label']
+            db.session.add(nlabel)
             db.session.commit()
-            return render_template('Verify.html',verify = 'success')
-        except:
-            return render_template('Verify.html',verify = 'error')
+            taskdata.label = int(nlabel.label_id)
+        else:
+            taskdata.label = int(task_form['label'])
+        db.session.add(taskdata)
+        db.session.commit()
+        return render_template('Verify.html',verify = 'success')
+        # except:
+        #     return render_template('Verify.html',verify = 'error')
     else:
         return render_template('Verify.html',verify = 'error')
 
@@ -302,14 +309,28 @@ def systemmessage():
 #-------------------------------------------------------------------------------
 @app.route('/shanyi/reports',methods = ['GET'])
 def reports():
-    reports = db.session.query(Report).all()
+    reports = db.session.query(Report).order_by(Report.datetime.desc()).all()
+    report_hw = []
+    report_mercy = []
+    report_item = {}
     reasons = [u'广告',u'色情',u'反动',u'无关']
     for i in reports:
         i.user = db.session.query(User).filter_by(uid = i.uid).first()
         i.heartword = db.session.query(HeartWord).filter_by(hwid = i.hwid).first()
+        if i.heartword.hwid in report_item:
+            report_item[i.heartword.hwid] += 1
+            continue
+        else:
+            report_item[i.heartword.hwid] = 1
         i.report_user = db.session.query(User).filter_by(uid = i.heartword.uid).first()
         i.reason_cn = reasons[i.reason]
-    return render_template('Reports.html',reports = reports,title = u'举报列表',manage = True)
+        if i.heartword.type == 0:
+            report_hw.append(i)
+        else:
+            i.images = db.session.query(HeartWordImage).filter_by(hwid = i.heartword.hwid).all()
+            report_mercy.append(i)
+
+    return render_template('Reports.html',report_hw = report_hw,report_mercy = report_mercy,report_item = report_item,title = u'举报列表',manage = True)
 
 #用户奖品信息
 #-------------------------------------------------------------------------------
@@ -343,7 +364,8 @@ def splash():
 
 @app.route('/shanyi/managetask',methods = ['GET'])
 def select():
-    return render_template('ManageTasks.html',title = u'发布日常任务',manage = True)
+    labels = db.session.query(Label).all()
+    return render_template('ManageTasks.html',labels = labels,title = u'发布日常任务',manage = True)
 
 
 @app.route('/shanyi/select',methods = ['GET'])

@@ -59,15 +59,19 @@
         <div class="item-inner">
           <div class="item-input">
             <select id="label" name="label">
-              <option value="1">无</option>
-              <option value="2">明德致远</option>
-              <option value="3">保护环境</option>
-              <option value="4">救人危急</option>
-              <option value="5">劝人为善</option>
-              <option value="6">成人之美</option>
-              <option value="7">上善若水</option>
-              <option value="8">不踏草坪</option>
+              {% for i in labels %}
+              <option value="{{i.label_id}}">{{i.name}}</option>
+              {% endfor %}
             </select>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <input type="text" name="new_label" placeholder="添加新标签(非必填)" id="new_label">
           </div>
         </div>
       </div>

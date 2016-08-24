@@ -13,7 +13,12 @@
   <div class="card-header">{{i.title}}</div>
   <div class="card-content">
     <div class="card-content-inner">
+      <p>
       {{i.desc}}
+      </p>
+      {% if i.image %}
+      <img class="tkimg"src="{{i.image}}">
+      {% endif %}
     </div>
   </div>
   <div class="card-footer">

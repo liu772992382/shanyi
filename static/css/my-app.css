@@ -12,6 +12,10 @@ i.n-icon{
     animation: lazyFadeIn 600ms;
 }
 
+img.tkimg{
+  max-height: 200px;
+} 
+
 .card{
   margin-top: 8px;
   margin-left: 0px;
