@@ -107,29 +107,35 @@ def heartwords_delete():
         return 'error'
     else:
         delete_item = db.session.query(HeartWord).filter_by(hwid = delete_id).first()
-    if delete_item == None:
-        return 'error'
-    else:
-        user = db.session.query(User).filter_by(uid = delete_item.uid).first()
-        user.points -= 10
-        db.session.delete(delete_item)
-        db.session.commit()
+        if delete_item == None:
+            return 'error'
+        else:
+            user = db.session.query(User).filter_by(uid = delete_item.uid).first()
+            user.points -= 10
+            db.session.delete(delete_item)
+            db.session.commit()
         return 'success'
 
 
 @app.route('/shanyi/heartwords/star',methods = ['POST'])
 def heartwords_star():
-	star_id = request.form.get('star_id')
-	if star_id == None:
-		return 'error'
-	else:
-		star_item = db.session.query(HeartWord).filter_by(hwid = star_id).first()
-		if star_item == None:
-			return 'error'
-		else:
-			star_item.star = 1#0 if star_item else 1
-			db.session.commit()
-			return 'success'
+    star_id = request.form.get('star_id')
+    if star_id == None:
+        return 'error'
+    else:
+        star_item = db.session.query(HeartWord).filter_by(hwid = star_id).first()
+        if star_item == None:
+            return 'error'
+        else:
+            user = db.session.query(User).filter_by(uid = star_item.uid).first()
+            if star_item.star:
+                star_item.star = 0
+                user.points -= 50
+            else:
+                star_item.star = 1
+                user.points += 50
+            db.session.commit()
+            return 'success'
 
 #用户查看 冻结 删除
 #-------------------------------------------------------------------------------

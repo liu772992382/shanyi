@@ -21,7 +21,7 @@ myApp.onPageInit('about', function (page) {
 var mySearchbar = app.searchbar('.searchbar', {
     searchList: '.list-block-search',
     searchIn: '.item-title'
-});   
+});
 
 // Generate dynamic page
 var dynamicPageIndex = 0;
@@ -205,6 +205,21 @@ function hw_star(star_id){
   },function(data,status){
     if(data == 'success'){
       myApp.alert('加精成功！',function(){
+      location.reload();
+      });}
+    else if(data =='error'){
+      myApp.alert('加精失败!');
+    }
+  })
+}
+
+function hw_unstar(star_id){
+  $.post('/shanyi/heartwords/star',
+  {
+    'star_id' : star_id
+  },function(data,status){
+    if(data == 'success'){
+      myApp.alert('取消加精成功！',function(){
       location.reload();
       });}
     else if(data =='error'){
