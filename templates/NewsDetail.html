@@ -9,28 +9,25 @@
         <span>返回</span>
       </a>
     </div>
-    <div class="center sliding">任务详情</div>
+    <div class="center sliding">新闻详情</div>
   </div>
 </div>
 {% endblock %}
 {% block content %}
 <div class="card">
-  <div class="card-header">{{ctask.title}}</div>
+  <div class="card-header">{{cnews.title}}</div>
   <div class="card-content">
     <div class="card-content-inner" style="font-size:15px;">
-      <p>
-        目标人数:{{ctask.target}}    实际人数:{{ctask.actual}}
-      </p>
       <pre style="white-space: pre-wrap;word-wrap: break-word;">
-      {{ctask.content}}
+      {{cnews.content}}
       </pre>
-      {% if ctask.image %}
-      <img class="tkimg"src="{{ctask.image}}">
+      {% if cnews.image %}
+      <img class="tkimg"src="{{cnews.image}}">
       {% endif %}
       <p>
-      <small>{{ctask.date}}</small>
+      <small>{{cnews.datetime}}</small>
       </p>
-      <a type="button" class="button button-big button-fill color-red" onclick="all_delete({{ctask.dtid}},'task')"  name="button">删除</a>
+      <a type="button" class="button button-big button-fill color-red" onclick="all_delete({{cnews.nid}},'news')"  name="button">删除</a>
     </div>
   </div>
 </div>

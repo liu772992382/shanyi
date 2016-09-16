@@ -17,7 +17,7 @@ UPLOAD_FOLDER = 'static/img/upload/'
 
 def hashimage(upfile):
     fname = upfile.filename
-    a = fname[:fname.rfind('.')].encode('utf8')
+    a = fname[:fname.rfind('.')].encode('utf8') + str(time.time())
     ha=hashlib.md5()
     ha.update(a)
     c = str(ha.hexdigest()) + fname[fname.rfind('.'):]
@@ -36,6 +36,8 @@ def login_required(func):
 
 def get_time():
 	return time.strftime("%Y-%m-%d %X", time.localtime())
+
+
 
 #登陆及登出操作
 #-------------------------------------------------------------------------------
@@ -142,29 +144,39 @@ def heartwords_star():
 @app.route('/shanyi/users',methods = ['GET','POST'])
 @login_required
 def users():
-	if request.method == 'GET':
-		users = db.session.query(User).filter_by(freeze=0).order_by(User.level.desc()).all()
-		users_freeze = db.session.query(User).filter_by(freeze=1).order_by(User.level.desc()).all()
-		return render_template('Users.html',users = users,title = u'用户',users_freeze = users_freeze,user = True)
-	elif request.method == 'POST':
-		user_form = request.form
-		if user_form['action'] == 'freeze':
-			freeze_user = db.session.query(User).filter_by(uid = user_form['uid']).first()
-			if freeze_user.freeze == 1:
-				freeze_user.freeze = 0
-			else:
-				freeze_user.freeze = 1
-			db.session.commit()
-			return 'success'
-		elif user_form['action'] == 'delete':
-			delete_user = db.session.query(User).filter_by(uid = user_form['uid']).first()
-			db.session.delete(delete_user)
-			db.session.commit()
-			return 'success'
-		else:
-			return 'error'
-	else:
-		return 'error'
+    if request.method == 'GET':
+        users = db.session.query(User).filter_by(freeze=0).order_by(User.level.desc()).all()
+        users_freeze = db.session.query(User).filter_by(freeze=1).order_by(User.level.desc()).all()
+        return render_template('Users.html',users = users,title = u'用户',users_freeze = users_freeze,user = True)
+    elif request.method == 'POST':
+        user_form = request.form
+        if user_form['action'] == 'freeze':
+            freeze_user = db.session.query(User).filter_by(uid = user_form['uid']).first()
+            messagedata = Message()
+            if freeze_user.freeze == 1:
+                freeze_user.freeze = 0
+                messagedata.uid = user_form['uid']
+                messagedata.type = 0
+                messagedata.content = '您的账号已解冻'
+                messagedata.datetime = get_time()
+            else:
+                freeze_user.freeze = 1
+                messagedata.uid = user_form['uid']
+                messagedata.type = 1
+                messagedata.content = '您的账号已被冻结，请联系管理员解除。'
+                messagedata.datetime = get_time()
+                db.session.add(messagedata)
+                db.session.commit()
+                return 'success'
+        elif user_form['action'] == 'delete':
+            delete_user = db.session.query(User).filter_by(uid = user_form['uid']).first()
+            db.session.delete(delete_user)
+            db.session.commit()
+            return 'success'
+        else:
+            return 'error'
+    else:
+        return 'error'
 
 #日常任务查看 详细信息 删除
 #-------------------------------------------------------------------------------
@@ -216,12 +228,15 @@ def task(dtid):
 def task_delete():
     try:
         deletedata = request.form
-        delete_item = db.session.query(DailyTask).filter_by(dtid = deletedata['dtid']).first()
+        delete_item = db.session.query(DailyTask).filter_by(dtid = deletedata['delete_id']).first()
         db.session.delete(delete_item)
         db.session.commit()
         return 'success'
     except:
         return 'error'
+
+
+
 
 #管理页面
 #-------------------------------------------------------------------------------
@@ -229,19 +244,29 @@ def task_delete():
 def manage():
     return render_template('Manage.html',title = u'管理中心',manage = True)
 
+
+
+
 #发布新闻
 #-------------------------------------------------------------------------------
 @app.route('/shanyi/news',methods = ['GET','POST'])
 @login_required
 def news():
+    newsdata = db.session.query(News).order_by(News.datetime.desc()).all()
+    return render_template('News.html', news = newsdata, manage = True)
+
+
+@app.route('/shanyi/add_news',methods = ['GET','POST'])
+@login_required
+def add_news():
     if request.method == 'GET':
-        return render_template('News.html',news = True,title = u'新闻')
+        return render_template('AddNews.html',news = True,title = u'新闻')
     elif request.method == 'POST':
         try:
             news_form = request.form
             for i in news_form:
                 if news_form[i] == '':
-                    return 'error'
+                    return render_template('Verify.html',verify = 'error')
             newsdata = News()
             newsdata.image = hashimage(request.files.get('file'))
             newsdata.subtitle = news_form['subtitle']
@@ -259,13 +284,45 @@ def news():
     else:
         return render_template('Verify.html',verify = 'error')
 
+@app.route('/shanyi/news/delete', methods = ['POST'])
+@login_required
+def delete_news():
+    try:
+        delete_item = db.session.query(News).filter_by(nid = request.form['delete_id']).first()
+        db.session.delete(delete_item)
+        db.session.commit()
+        return 'success'
+    except:
+        return 'error'
+
+
+@app.route('/shanyi/news/<int:nid>',methods = ['GET'])
+def news_detail(nid):
+    cnews = db.session.query(News).filter_by(nid = nid).first()
+    comment = db.session.query(NewsComment).filter_by(nid = nid).all()
+    for i in comment:
+        user0 = db.session.query(User).filter_by(uid = i.uid).first()
+        i.name = user0.username
+        i.avatar = user0.avatar
+    return render_template('NewsDetail.html', cnews = cnews, title = u'新闻详情',comment = comment,tasks = True)
+
+
+
+
 #发布奖品
 #-------------------------------------------------------------------------------
-@app.route('/shanyi/prize',methods = ['GET','POST'])
+
+@app.route('/shanyi/prize', methods = ['GET','POST'])
 @login_required
 def prize():
+    prizes = db.session.query(Prize).order_by(Prize.datetime.desc()).all()
+    return render_template('Prize.html', prizes = prizes)
+
+@app.route('/shanyi/add_prize',methods = ['GET','POST'])
+@login_required
+def add_prize():
     if request.method == 'GET':
-        return render_template('Prize.html',title = u'发布奖品',manage = True)
+        return render_template('AddPrize.html',title = u'发布奖品',manage = True)
     elif request.method == 'POST':
         try:
             prize_form = request.form
@@ -286,6 +343,17 @@ def prize():
             return render_template('Verify.html',verify = 'error')
     else:
         return render_template('Verify.html',verify = 'error')
+
+@app.route('/shanyi/prize/delete', methods = ['POST'])
+def delete_prize():
+    try:
+        delete_item = db.session.query(Prize).filter_by(pzid = request.form['delete_id']).first()
+        db.session.delete(delete_item)
+        db.session.commit()
+        return 'success'
+    except:
+        return 'error'
+
 
 #发送系统消息
 #-------------------------------------------------------------------------------
@@ -310,6 +378,9 @@ def systemmessage():
             return render_template('Verify.html',verify = 'error')
     else:
         return render_template('Verify.html',verify = 'error')
+
+
+
 
 #举报列表
 #-------------------------------------------------------------------------------
@@ -338,6 +409,9 @@ def reports():
 
     return render_template('Reports.html',report_hw = report_hw,report_mercy = report_mercy,report_item = report_item,title = u'举报列表',manage = True)
 
+
+
+
 #用户奖品信息
 #-------------------------------------------------------------------------------
 @app.route('/shanyi/userprize',methods = ['GET'])
@@ -347,6 +421,9 @@ def user_prize():
         i.user = db.session.query(User).filter_by(uid = i.uid).first()
         i.prize = db.session.query(Prize).filter_by(pzid = i.pzid).first()
     return render_template('UserPrize.html',userp = userp,manage = True)
+
+
+
 
 #启动页图片设置
 #-------------------------------------------------------------------------------

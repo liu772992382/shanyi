@@ -58,7 +58,7 @@
                   <p class="color-gray">Likes: {{i.likes}} &nbsp;&nbsp; Comments: {{i.comments}}</p>
                 </div>
               </div>
-              <div class="card-footer"><a onclick="hw_star({{i.hwid}})"  class="link {% if i.star %} active {% endif %}">加精</a><a onclick="hw_delete({{i.hwid}})" class="link">删除</a></div>
+              <div class="card-footer"><a onclick="hw_star({{i.hwid}})"  class="link {% if i.star %} active {% endif %}">加精</a><a onclick="hw_delete({{i.hwid}},'heartwords')" class="link">删除</a></div>
             </div>
           </li>
           {% endfor %}
@@ -95,7 +95,7 @@
                   <p class="color-gray">Likes: {{i.likes}} &nbsp;&nbsp; Comments: {{i.comments}}</p>
                 </div>
               </div>
-              <div class="card-footer"><a onclick="hw_unstar({{i.hwid}})"  class="link {% if i.star %} active {% endif %}">取消加精</a><a onclick="hw_delete({{i.hwid}})" class="link">删除</a></div>
+              <div class="card-footer"><a onclick="hw_unstar({{i.hwid}})"  class="link {% if i.star %} active {% endif %}">取消加精</a><a onclick="all_delete({{i.hwid}})" class="link">删除</a></div>
             </div>
           </li>
           {% endfor %}

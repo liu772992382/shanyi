@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block nav%}
+<div class="navbar">
+  <div class="navbar-inner">
+    <!-- Now, Left and Center parts reflect page title and page links, let's slide them -->
+    <div class="left sliding">
+      <a href="#" class="link back">
+        <i class="icon icon-back"></i>
+        <span>返回</span>
+      </a>
+    </div>
+    <div class="center sliding">发布奖品</div>
+  </div>
+</div>
+{% endblock %}
+{% block content %}
+<div class="content-block-title">Just inputs</div>
+<form class="list-block store-data" method="post" enctype="multipart/form-data" action="/shanyi/prize" id="prize_form">
+  <ul>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <input type="text" placeholder="奖品标题" name="title" id="title" required="">
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <input type="text" placeholder="提供者" name="provider" id="provider" required="">
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <span>大图</span>
+            <input type="file" name="image" placeholder="大图" id="image" required="">
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <span>封面图</span>
+            <input type="file" name="cover" placeholder="封面图" id="cover" required="">
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <span>圆形图</span>
+            <input type="file" name="round_img" placeholder="圆形图" id="round_img" required="">
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <input type="text" name="cost" placeholder="所需积分(必须为数字)" id="cost"  required=""/>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <textarea name="content" rows="20" cols="40" placeholder="奖品详情" id="content" required=""></textarea>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <input type="submit" name="Submit" value="添加" class="button button-big button-fill"/>
+</form>
+{% endblock %}

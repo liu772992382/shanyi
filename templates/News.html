@@ -2,80 +2,40 @@
 {% block nav%}
 <div class="navbar">
   <div class="navbar-inner">
-    <!-- Now, Left and Center parts reflect page title and page links, let's slide them -->
     <div class="left sliding">
       <a href="#" class="link back">
         <i class="icon icon-back"></i>
         <span>返回</span>
       </a>
     </div>
-    <div class="center sliding">发布新闻</div>
+    <div class="center sliding">新闻</div>
+    <div class="right">
+      <a href="/shanyi/add_news" class="link">
+        <i class="fa fa-plus"></i>
+      </a>
+    </div>
   </div>
 </div>
+  <!-- <div class="right"></div> -->
 {% endblock %}
 {% block content %}
-<div class="content-block-title">Just inputs</div>
-<form class=" list-block"  method="post" enctype="multipart/form-data" action="/shanyi/news">
-  <ul>
-    <li>
-      <div class="item-content">
-        <div class="item-inner">
-          <div class="item-input">
-            <select name="type" id="type">
-              <option value="0">善意能量</option>
-              <option value="1">公益行</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="item-content">
-        <div class="item-inner">
-          <div class="item-input">
-            <input type="text" placeholder="标题" name="title" id="title"required="">
-          </div>
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="item-content">
-        <div class="item-inner">
-          <div class="item-input">
-            <input type="text" placeholder="副标题" name="subtitle" id="subtitle" required="">
-          </div>
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="item-content">
-        <div class="item-inner">
-          <div class="item-input">
-            <span>图片</span>
-            <input type="file" placeholder="图片链接" name="file" id="file" required="">
-          </div>
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="item-content">
-        <div class="item-inner">
-          <div class="item-input">
-            <input type="text" name="source" placeholder="新闻来源" id="source" required="">
-          </div>
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="item-content">
-        <div class="item-inner">
-          <div class="item-input">
-            <textarea name="content" rows="20" cols="40" placeholder="内容" id="content" required=""></textarea>
-          </div>
-        </div>
-      </div>
-    </li>
-  </ul>
-<input type="submit" name="Submit" value="添加" class="button button-big button-fill"/>
-</form>
+{% for i in news %}
+<div class="card">
+  <div class="card-header">{{i.title}}</div>
+  <div class="card-content">
+    <div class="card-content-inner">
+      <p>
+      {{i.subtitle}}
+      </p>
+      {% if i.image %}
+      <img class="tkimg"src="{{i.image}}">
+      {% endif %}
+    </div>
+  </div>
+  <div class="card-footer">
+    <a href="/shanyi/news/{{i.nid}}">更多</a>
+    {{i.datetime}}
+  </div>
+</div>
+{% endfor %}
 {% endblock %}

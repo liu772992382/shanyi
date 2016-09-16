@@ -14,7 +14,11 @@ i.n-icon{
 
 img.tkimg{
   max-height: 200px;
-} 
+}
+
+img.pzimg{
+  max-height: 170px;
+}
 
 .card{
   margin-top: 8px;

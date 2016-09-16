@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block nav%}
+<div class="navbar">
+  <div class="navbar-inner">
+    <!-- Now, Left and Center parts reflect page title and page links, let's slide them -->
+    <div class="left sliding">
+      <a href="#" class="link back">
+        <i class="icon icon-back"></i>
+        <span>返回</span>
+      </a>
+    </div>
+    <div class="center sliding">发布日常任务</div>
+  </div>
+</div>
+{% endblock %}
+{% block content %}
+<div class="content-block-title">Just inputs</div>
+<form class="list-block store-data" method="post" enctype="multipart/form-data" action="/shanyi/dailytasks" id="task_form">
+  <ul>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <input type="text" placeholder="标题" name="title" id="title" required="">
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <textarea name="desc" rows="20" cols="40" placeholder="善意承诺" id="desc" required=""></textarea>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <span>任务配图</span>
+            <input type="file" name="image" placeholder="任务配图" id="image" required="">
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <input type="text" name="target" placeholder="目标人数(必须为数字)" id="target" required="">
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <select id="label" name="label">
+              {% for i in labels %}
+              <option value="{{i.label_id}}">{{i.name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <input type="text" name="new_label" placeholder="添加新标签(非必填)" id="new_label">
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <textarea name="content" rows="20" cols="40" placeholder="内容" id="content" required=""></textarea>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <input type="submit" name="Submit" value="添加" class="button button-big button-fill"/>
+</form>
+{% endblock %}

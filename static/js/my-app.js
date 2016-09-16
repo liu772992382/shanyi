@@ -183,20 +183,33 @@ function news_back(){
   window.location.href = "/shanyi/manage";
 }
 
-function hw_delete(delete_id){
-  $.post('/shanyi/heartwords/delete',
-  {
-    'delete_id' : delete_id
-  },function(data,status){
-    if(data == 'success'){
-      myApp.alert('删除成功！',function(){
-        location.reload();
-      });}
-    else if(data =='error'){
-      myApp.alert('删除失败!');
-    }
-  })
+function all_delete(delete_id,action){
+
+  myApp.confirm('确定删除该信息?','善意',
+  function () {
+    $.post('/shanyi/' + action + '/delete',
+    {
+      'delete_id' : delete_id
+    },function(data,status){
+      if(data == 'success'){
+        myApp.alert('删除成功！',function(){
+          location.reload();
+        });}
+      else if(data =='error'){
+        myApp.alert('删除失败!');
+      }
+    })
+  },
+  function () {
+    ;
+  }
+);
+
+
+
+
 }
+
 
 function hw_star(star_id){
   $.post('/shanyi/heartwords/star',
@@ -274,7 +287,7 @@ $$('form.ajax-submit').on('submitted', function (e) {
 });
 
 function news1(){
-  $.post('/shanyi/news',{
+  $.post('/shanyi/news/add',{
     'title':$('#title').val(),
     'subtitle':$('#subtitle').val(),
     'image':$('#image').val(),
