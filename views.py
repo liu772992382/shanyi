@@ -132,10 +132,12 @@ def heartwords_star():
             user = db.session.query(User).filter_by(uid = star_item.uid).first()
             if star_item.star:
                 star_item.star = 0
-                user.points -= 50
+                user.hw_points -= 50
+                if user.hw_points < 0:
+                    user.hw_points = 0 
             else:
                 star_item.star = 1
-                user.points += 50
+                user.hw_points += 50
             db.session.commit()
             return 'success'
 
@@ -152,22 +154,22 @@ def users():
         user_form = request.form
         if user_form['action'] == 'freeze':
             freeze_user = db.session.query(User).filter_by(uid = user_form['uid']).first()
-            messagedata = Message()
+            messagedata = SystemMessage()
             if freeze_user.freeze == 1:
                 freeze_user.freeze = 0
                 messagedata.uid = user_form['uid']
                 messagedata.type = 0
                 messagedata.content = '您的账号已解冻'
                 messagedata.datetime = get_time()
-            else:
+            elif freeze_user.freeze == 0:
                 freeze_user.freeze = 1
                 messagedata.uid = user_form['uid']
                 messagedata.type = 1
-                messagedata.content = '您的账号已被冻结，请联系管理员解除。'
+                messagedata.content = '您的账号已被冻结，请联系管理员解除'
                 messagedata.datetime = get_time()
-                db.session.add(messagedata)
-                db.session.commit()
-                return 'success'
+            db.session.add(messagedata)
+            db.session.commit()
+            return 'success'
         elif user_form['action'] == 'delete':
             delete_user = db.session.query(User).filter_by(uid = user_form['uid']).first()
             db.session.delete(delete_user)
@@ -185,7 +187,7 @@ def users():
 def daily_tasks():
     if request.method == 'GET':
         daily_task = db.session.query(DailyTask).all()
-        return render_template('DailyTasks.html',tasks = True,daily_task = daily_task,title = u'日常任务')
+        return render_template('DailyTasks.html', manage = True,daily_task = daily_task,title = u'日常任务')
     elif request.method == 'POST':
         # try:
         task_form = request.form
@@ -221,7 +223,7 @@ def task(dtid):
         user0 = db.session.query(User).filter_by(uid = i.uid).first()
         i.name = user0.username
         i.avatar = user0.avatar
-    return render_template('Task.html',ctask = ctask,title = u'任务详情',comment = comment,tasks = True)
+    return render_template('Task.html',ctask = ctask,title = u'任务详情',comment = comment,manage = True)
 
 
 @app.route('/shanyi/task/delete',methods = ['POST'])
@@ -316,7 +318,7 @@ def news_detail(nid):
 @login_required
 def prize():
     prizes = db.session.query(Prize).order_by(Prize.datetime.desc()).all()
-    return render_template('Prize.html', prizes = prizes)
+    return render_template('Prize.html', prizes = prizes, manage = True)
 
 @app.route('/shanyi/add_prize',methods = ['GET','POST'])
 @login_required
