@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block nav%}
+<div class="navbar">
+  <div class="navbar-inner">
+    <!-- Now, Left and Center parts reflect page title and page links, let's slide them -->
+    <div class="left sliding">
+      <a href="#" class="link back">
+        <i class="icon icon-back"></i>
+        <span>返回</span>
+      </a>
+    </div>
+    <div class="center sliding">启动页图片</div>
+  </div>
+</div>
+{% endblock %}
+{% block content %}
+<div class="content-block-title">Just inputs</div>
+<form class=" list-block store-data"  method="post" enctype="multipart/form-data" action="/shanyi/splash" id="splash_form">
+  <ul>
+
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <span>图片</span>
+            <input type="file" placeholder="图片链接" name="img" id="img" required="">
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-input">
+            <input type="text" name="url" placeholder="链接url" id="url" required="">
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+<input type="submit" name="Submit" value="添加" class="button button-big button-fill"/>
+</form>
+{% endblock %}

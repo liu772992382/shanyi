@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block nav%}
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="center sliding">行善</div>
+  </div>
+</div>
+  <!-- <div class="right"></div> -->
+{% endblock %}
+{% block search %}
+<form data-search-list=".list-block-search" data-search-in=".item-title" class="searchbar searchbar-init">
+    <div class="searchbar-input">
+      <input type="search" placeholder="用户名查找"><a href="#" class="searchbar-clear"></a>
+    </div><a href="#" class="searchbar-cancel">Cancel</a>
+  </form>
+
+  <!-- Search bar overlay -->
+  <div class="searchbar-overlay"></div>
+
+{% endblock %}
+{% block content %}
+
+
+    <div class="content-block">
+      <!-- This block will be displayed if nothing found -->
+      <div class="content-block searchbar-not-found">
+        <div class="content-block-inner">Nothing found</div>
+      </div>
+
+      <!-- This block will be displayed if anything found, and this list block is used a searbar target -->
+
+      <div class="list-block media-list list-block-search searchbar-found">
+        <ul>
+          {% for i in info %}
+          <li>
+            <div class="card facebook-card">
+              <div class="card-header">
+                <div class="facebook-avatar"><img class="lazy-loaded lazy-fadeIn" src="http://139.196.187.155/images/users/{{i.avatar}}.png" width="34" height="34" onerror="this.src='../static/img/icon/heart.png'"></div>
+                <div class="facebook-name item-title">{{i.nickname}}</div>
+                <div class="facebook-date">{{i.datetime}}</div>
+              </div>
+              <div class="card-content">
+                <div class="card-content-inner">
+                  <p>{{i.content|safe}}</p>
+                  {% for j in i.images %}
+                  <img src="http://139.196.187.155/images/heart_words/{{j.md5}}_thumbnail.png" alt="" />
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="card-footer"><a class="link">Likes: {{i.likes}}</a><a class="link">Comments: {{i.comments}}</a></div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+
+
+{% endblock %}

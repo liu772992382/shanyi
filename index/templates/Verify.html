@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<span id="verify">{{verify}}</span>
+<script type="text/javascript">
+$(document).ready(function(){
+  if($('span#verify').text() == 'success'){
+    myApp.alert('发布成功！',function(){
+      window.location.href = "/shanyi/manage";
+    });
+    }
+  else if(data =='error'){
+    myApp.alert('发布失败!',function(){
+      window.location.href = "/shanyi/manage";
+    });
+  }
+});
+</script>
+{% endblock %}

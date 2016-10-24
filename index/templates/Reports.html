@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block nav%}
+<div class="navbar">
+  <div class="navbar-inner">
+    <!-- Now, Left and Center parts reflect page title and page links, let's slide them -->
+    <div class="left sliding">
+      <a href="#" class="link back">
+        <i class="icon icon-back"></i>
+        <span>返回</span>
+      </a>
+    </div>
+    <div class="center sliding">举报列表</div>
+  </div>
+</div>
+{% endblock %}
+{% block content %}
+<div class="buttons-row">
+  <!-- 关联到第一个tab, 默认激活 -->
+  <a href="#tab1" class="tab-link active button">行善</a>
+  <!-- 关联到第二个tab -->
+  <a href="#tab2" class="tab-link button">心语</a>
+</div>
+
+
+
+<div class="tabs">
+  <!-- Tab 1, 默认激活 -->
+
+    <div id="tab1" class="tab active">
+    <div class="content-block">
+
+
+      <!-- This block will be displayed if anything found, and this list block is used a searbar target -->
+
+      <div class="list-block media-list ">
+        <ul>
+          {% for i in report_mercy %}
+          <li>
+            <div class="card facebook-card">
+              <div class="card-header">
+                <div class="facebook-avatar"><img class="lazy-loaded lazy-fadeIn" src="http://139.196.187.155/images/users/{{i.report_user.avatar}}.png" width="34" height="34" onerror="this.src='../static/img/icon/heart.png'"></div>
+                <div class="facebook-name item-title">
+                  {{i.report_user.nickname}}
+                  <span>
+                    举报原因：{{i.reason_cn}}
+                  </span>
+                </div>
+                <div class="facebook-date">{{i.datetime}}</div>
+              </div>
+              <div class="card-content">
+                <div class="card-content-inner">
+                  <p>{{i.heartword.content|safe}}</p>
+                  {% for j in i.images %}
+                  <img src="http://139.196.187.155/images/heart_words/{{j.md5}}_thumbnail.png" alt="" />
+                  {% endfor %}
+                  <p class="color-gray">Likes: {{i.heartword.likes}} &nbsp;&nbsp; Comments: {{i.heartword.comments}}</p>
+                </div>
+              </div>
+              <div class="card-footer"><a>举报者:{{i.user.nickname}}</a><a>被举报次数:{{report_item[i.heartword.hwid]}}</a></div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="tab2" class="tab">
+    <div class="content-block">
+
+
+      <!-- This block will be displayed if anything found, and this list block is used a searbar target -->
+
+      <div class="list-block media-list ">
+        <ul>
+          {% for i in report_hw %}
+          <li>
+            <div class="card facebook-card">
+              <div class="card-header">
+                <div class="facebook-avatar"><img class="lazy-loaded lazy-fadeIn" src="http://139.196.187.155/images/users/{{i.report_user.avatar}}.png" width="34" height="34" onerror="this.src='../static/img/icon/heart.png'"></div>
+                <div class="facebook-name item-title">
+                  {{i.report_user.nickname}}
+                  <span>
+                    举报原因：{{i.reason_cn}}
+                  </span>
+                </div>
+                <div class="facebook-date">{{i.datetime}}</div>
+              </div>
+              <div class="card-content">
+                <div class="card-content-inner">
+                  <p>{{i.heartword.content|safe}}</p>
+                  <p class="color-gray">Likes: {{i.heartword.likes}} &nbsp;&nbsp; Comments: {{i.heartword.comments}}</p>
+                </div>
+              </div>
+              <div class="card-footer"><a>举报者:{{i.user.nickname}}</a><a>被举报次数:{{report_item[i.heartword.hwid]}}</a></div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+
+
+</div>
+<!-- 
+{% for i in reports %}
+<div class="card facebook-card">
+  <div class="card-header">
+    <div class="facebook-avatar"><img class="lazy-loaded lazy-fadeIn" src="http://139.196.187.155/images/users/{{i.report_user.avatar}}.png" width="34" height="34" onerror="this.src='../static/img/icon/heart.png'"></div>
+    <div class="facebook-name">{{i.report_user.nickname}}</div>
+    <div class="facebook-date">{{i.datetime}}</div>
+  </div>
+  <div class="card-content">
+    <div class="card-content-inner">
+      <p>
+        举报者:{{i.user.nickname}}&nbsp;
+          举报原因：{{i.reason_cn}}
+      </p>
+      {{i.heartword.content|safe}}
+    </div>
+  </div>
+  <div class="card-footer"><a >Likes: {{i.heartword.likes}}</a><a class="link">Comments: {{i.heartword.comments}}</a></div>
+</div> -->
+{% endfor %}
+{% endblock %}

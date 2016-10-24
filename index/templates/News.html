@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block nav%}
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="left sliding">
+      <a href="#" class="link back">
+        <i class="icon icon-back"></i>
+        <span>返回</span>
+      </a>
+    </div>
+    <div class="center sliding">新闻</div>
+    <div class="right">
+      <a href="/shanyi/add_news" class="link">
+        <i class="fa fa-plus"></i>
+      </a>
+    </div>
+  </div>
+</div>
+  <!-- <div class="right"></div> -->
+{% endblock %}
+{% block content %}
+{% for i in news %}
+<div class="card">
+  <div class="card-header">{{i.title}}</div>
+  <div class="card-content">
+    <div class="card-content-inner">
+      <p>
+      {{i.subtitle}}
+      </p>
+      {% if i.image %}
+      <img class="tkimg"src="{{i.image}}">
+      {% endif %}
+    </div>
+  </div>
+  <div class="card-footer">
+    <a href="/shanyi/news/{{i.nid}}">更多</a>
+    {{i.datetime}}
+  </div>
+</div>
+{% endfor %}
+{% endblock %}
