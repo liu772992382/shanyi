@@ -7,6 +7,10 @@ i.n-icon{
     padding: 2px;
 }
 
+a.card-a{
+  color:currentColor;
+}
+
 .lazy-loaded.lazy-fadeIn {
     -webkit-animation: lazyFadeIn 600ms;
     animation: lazyFadeIn 600ms;

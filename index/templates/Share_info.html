@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block nav%}
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="left sliding">
+      <a href="#" class="link back">
+        <i class="icon icon-back"></i>
+        <span>返回</span>
+      </a>
+    </div>
+    <div class="center sliding">行善</div>
+  </div>
+</div>
+  <!-- <div class="right"></div> -->
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="content-block">
+      <!-- This block will be displayed if nothing found -->
+
+
+      <!-- This block will be displayed if anything found, and this list block is used a searbar target -->
+
+      <div class="list-block media-list ">
+        <ul>
+          {% for i in info %}
+          <li onclick="window.location.href='/share'">
+            <div class="card facebook-card link" >
+              <div class="card-header">
+                <div class="facebook-avatar"><img class="lazy-loaded lazy-fadeIn" src="http://139.196.187.155/images/users/{{i.avatar}}.png" width="34" height="34" onerror="this.src='../static/img/icon/heart.png'"></div>
+                <div class="facebook-name item-title">{{i.nickname}}</div>
+                <div class="facebook-date">{{i.datetime}}</div>
+              </div>
+              <div class="card-content">
+                <div class="card-content-inner">
+                  <p>{{i.content|safe}}</p>
+                  {% for j in i.images %}
+                  <img src="http://139.196.187.155/images/heart_words/{{j.md5}}_thumbnail.png" alt="" />
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="card-footer"><a class="link">Likes: {{i.likes}}</a><a class="link">Comments: {{i.comments}}</a></div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+
+
+{% endblock %}
