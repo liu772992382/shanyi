@@ -108,14 +108,35 @@ def share():
 
 @app.route('/share/<s_type>/<int:sid>', methods = ['GET'])
 def share_info(s_type, sid):
-    info = db.session.query(HeartWord).filter_by(type = s_type, hwid = sid).order_by(HeartWord.datetime.desc()).all()
-    for i in info:
+    info = db.session.query(HeartWord).filter_by(hwid = sid).order_by(HeartWord.datetime.desc()).first()
+    comments = db.session.query(HeartWordComment).filter_by(hwid = sid).order_by(HeartWordComment.datetime.desc()).all()
+
+    user0 = db.session.query(User).filter_by(uid = info.uid).first()
+    info.nickname = user0.nickname
+    info.avatar = user0.avatar
+    if info.type == 1:
+        info.images = db.session.query(HeartWordImage).filter_by(hwid =info.hwid).all()
+    for i in comments:
         user0 = db.session.query(User).filter_by(uid = i.uid).first()
-        i.nickname = user0.nickname
+        i.name = user0.username
         i.avatar = user0.avatar
-        if s_type == 1:
-            i.images = db.session.query(HeartWordImage).filter_by(hwid =i.hwid).all()
-    return render_template('Share_info.html', info = info, share = True, title = u'分享内容')
+    return render_template('Share_hw.html', info = info, share = True, comments = comments, title = u'善意分享')
+
+@app.route('/share/hw/<int:sid>', methods = ['GET'])
+def share_hw(sid):
+    info = db.session.query(HeartWord).filter_by(hwid = sid).order_by(HeartWord.datetime.desc()).first()
+    comments = db.session.query(HeartWordComment).filter_by(hwid = sid).order_by(HeartWordComment.datetime.desc()).all()
+    if info != None:
+        user0 = db.session.query(User).filter_by(uid = info.uid).first()
+        info.nickname = user0.nickname
+        info.avatar = user0.avatar
+        if info.type == 1:
+            info.images = db.session.query(HeartWordImage).filter_by(hwid =info.hwid).all()
+        for i in comments:
+            user0 = db.session.query(User).filter_by(uid = i.uid).first()
+            i.name = user0.username
+            i.avatar = user0.avatar
+    return render_template('Share_hw.html', info = info, share = True, comments = comments, title = u'善意分享')
 
 @app.route('/shanyi/select',methods = ['GET'])
 def managetask():

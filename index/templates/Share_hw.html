@@ -1,0 +1,66 @@
+{% extends "share_base.html" %}
+{% block nav%}
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="center">善意分享</div>
+  </div>
+</div>
+  <!-- <div class="right"></div> -->
+{% endblock %}
+
+{% block content %}
+<div class="content-block">
+  <!-- This block will be displayed if nothing found -->
+
+
+  <!-- This block will be displayed if anything found, and this list block is used a searbar target -->
+
+  <div class="list-block media-list " style="margin-bottom:10px;">
+    <ul>
+      <li>
+        <div class="card facebook-card link" >
+          <div class="card-header">
+            <div class="facebook-avatar"><img class="lazy-loaded lazy-fadeIn" src="http://139.196.187.155/images/users/{{info.avatar}}.png" width="34" height="34" onerror="this.src='/static/img/icon/heart.png'"></div>
+            <div class="facebook-name item-title">{{info.nickname}}</div>
+            <div class="facebook-date">{{info.datetime}}</div>
+          </div>
+          <div class="card-content">
+            <div class="card-content-inner">
+              <p>{{info.content|safe}}</p>
+              {% for j in info.images %}
+              <img src="http://139.196.187.155/images/heart_words/{{j.md5}}_thumbnail.png" alt="" />
+              {% endfor %}
+            </div>
+          </div>
+          <div class="card-footer">
+            <a class="link" style="color:#FF5511;">Comments: {{info.comments}}</a>
+              <a class="link">Likes: {{info.likes}}</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="list-block media-list">
+    <ul>
+      {% for i in comments%}
+      <li>
+        <div class="item-content">
+          <div class="item-media"><img style="border-radius:50%; overflow:hidden;" src="http://139.196.187.155/images/users/{{i.avatar}}.png" width="44"></div>
+          <div class="item-inner">
+            <div class="item-title-row">
+              <div class="item-title">{{i.name}}</div>
+            </div>
+            <div class="item-title-row">
+              <div class="item-time">{{i.datetime}}</div>
+            </div>
+            <p style="margin-top:2px;margin-bottom:1px;">
+              {{i.content}}
+            </p>
+          </div>
+        </div>
+      </li>
+      {% endfor%}
+    </ul>
+  </div>
+</div>
+{% endblock %}

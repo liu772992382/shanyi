@@ -49,8 +49,10 @@
 
                 </div>
               </div>
-              <div class="card-footer"><a class="link">Likes: {{i.likes}}</a><a class="link">Comments: {{i.comments}}</a></div>
-            </div>
+              <div class="card-footer">
+                <a class="link"><i class="fa fa-commenting-o" ></i> &nbsp;{{i.comments}}</a>
+                  <a class="link"><i class="fa fa-thumbs-o-up" ></i>&nbsp;{{i.likes}}</a>
+              </div>
           </li>
           {% endfor %}
         </ul>

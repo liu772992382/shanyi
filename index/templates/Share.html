@@ -30,24 +30,29 @@
         <ul>
           {% for i in info %}
           <li>
-          <a href="/share/1/{{i.hwid}}" class="card-a">
-            <div class="card facebook-card item-link" >
-              <div class="card-header">
-                <div class="facebook-avatar"><img class="lazy-loaded lazy-fadeIn" src="http://139.196.187.155/images/users/{{i.avatar}}.png" width="34" height="34" onerror="this.src='../static/img/icon/heart.png'"></div>
-                <div class="facebook-name item-title">{{i.nickname}}</div>
-                <div class="facebook-date">{{i.datetime}}</div>
-              </div>
-              <div class="card-content">
-                <div class="card-content-inner">
-                  <p>{{i.content|safe}}</p>
-                  {% for j in i.images %}
-                  <img src="http://139.196.187.155/images/heart_words/{{j.md5}}_thumbnail.png" alt="" />
-                  {% endfor %}
+            <div class="card facebook-card " >
+              <a href="/share/hw/{{i.hwid}}" class="card-a">
+                <div>
+                  <div class="card-header">
+                    <div class="facebook-avatar"><img class="lazy-loaded lazy-fadeIn" src="http://139.196.187.155/images/users/{{i.avatar}}.png" width="34" height="34" onerror="this.src='../static/img/icon/heart.png'"></div>
+                    <div class="facebook-name item-title">{{i.nickname}}</div>
+                    <div class="facebook-date">{{i.datetime}}</div>
+                  </div>
+                  <div class="card-content">
+                    <div class="card-content-inner">
+                      <p>{{i.content|safe}}</p>
+                      {% for j in i.images %}
+                      <img src="http://139.196.187.155/images/heart_words/{{j.md5}}_thumbnail.png" alt="" />
+                      {% endfor %}
+                    </div>
+                  </div>
                 </div>
+              </a>
+              <div class="card-footer">
+                <a class="link"><i class="fa fa-commenting-o" ></i> &nbsp;{{i.comments}}</a>
+                  <a class="link"><i class="fa fa-thumbs-o-up" ></i>&nbsp;{{i.likes}}</a>
               </div>
-              <div class="card-footer"><a class="link">Likes: {{i.likes}}</a><a class="link">Comments: {{i.comments}}</a></div>
             </div>
-          </a>
           </li>
           {% endfor %}
         </ul>

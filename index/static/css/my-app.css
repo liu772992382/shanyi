@@ -11,6 +11,30 @@ a.card-a{
   color:currentColor;
 }
 
+div.item-media{
+  padding: 0px !important;
+}
+
+div.card-footer a > i{
+  font-size: 18px;
+  
+}
+
+div.card-content-inner{
+  padding-bottom: 8px !important;
+}
+
+div.item-time{
+  font-size: 13px;
+  color: #8e8e93;
+  padding-bottom: 2px;
+}
+
+div.item-title{
+  font-weight: 400 !important;
+  padding-top: 5px;
+}
+
 .lazy-loaded.lazy-fadeIn {
     -webkit-animation: lazyFadeIn 600ms;
     animation: lazyFadeIn 600ms;
