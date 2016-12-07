@@ -70,7 +70,7 @@ def index():
 
 #心语查看 删除 加精
 #-------------------------------------------------------------------------
-@app.route('/heartwords',methods = ['GET'])
+@app.route('/',methods = ['GET'])
 # @login_required
 def get_HeartWords():
 	info = db.session.query(HeartWord).filter_by(type = 0).order_by(HeartWord.datetime.desc()).all()
